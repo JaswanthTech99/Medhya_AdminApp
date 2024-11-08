@@ -2,7 +2,6 @@
 using System.Data;
 using Medhya.Admin.Models;
 
-
 namespace Medhya.Admin.Repository
 {
     public class ItemRepository : IItemRepository
@@ -57,6 +56,12 @@ namespace Medhya.Admin.Repository
         {
             var result = await _dbConnection.QueryFirstOrDefaultAsync<Item>("USP_ITEMDETAILS_ID", new { Id = id }, commandType: CommandType.StoredProcedure);
             return result;
+        }
+
+        public  async Task<List<string>> UOMList()
+        {
+            var uomList = await _dbConnection.QueryAsync<string>("", commandType: CommandType.StoredProcedure);
+            return uomList.ToList();
         }
 
         //public Task<int> UpdateAsync(Item product)

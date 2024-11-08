@@ -8,5 +8,6 @@ namespace Medhya.Admin.Repository
         Task<int> AddAsync(Item item);
         // Task<int> UpdateAsync(Item item);
         Task<int> DeleteAsync(int id);
+        Task<List<string>> UOMList();
     }
 }

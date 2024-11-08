@@ -1,0 +1,68 @@
+﻿@model Medhya.Admin.Models.Item
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+
+<h4>Item</h4>
+<hr />
+<form asp-action="Create">
+    <div class="row">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="FK_CategoryId" class="control-label"></label>
+                <input asp-for="FK_CategoryId" class="form-control" />
+                <span asp-validation-for="FK_CategoryId" class="text-danger"></span>
+
+            </div>
+            <div class="form-group">
+                <label asp-for="ItemCode" class="control-label"></label>
+                <input asp-for="ItemCode" class="form-control" />
+                <span asp-validation-for="ItemCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ItemName" class="control-label"></label>
+                <input asp-for="ItemName" class="form-control" />
+                <span asp-validation-for="ItemName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ItemPrice" class="control-label"></label>
+                <input asp-for="ItemPrice" class="form-control" />
+                <span asp-validation-for="ItemPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FK_UOM" class="control-label"></label>
+                <input asp-for="FK_UOM" class="form-control" />
+                <span asp-validation-for="FK_UOM" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+               
+                <textarea asp-for="Description" type="text" class="form-control" rows="8" id="MessageInputField"  ></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </div>
+</form>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
