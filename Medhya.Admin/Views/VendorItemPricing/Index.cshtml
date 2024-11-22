@@ -1,0 +1,105 @@
+﻿@model VendorItemPricingViewModel
+
+<div class="container">
+    <!-- Display Messages -->
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert @(TempData["MessageType"].ToString() == "success" ? "alert-success" : "alert-danger")">
+            @TempData["Message"]
+        </div>
+    }
+
+    <div class="row">
+        <!-- Form Section -->
+        <div class="col-md-3">
+            <h3>@(Model.VendorItemPricing.Id == 0 ? "Create Vendor Item Pricing" : "Edit Vendor Item Pricing")</h3>
+            <form asp-action="Create" method="post">
+                <input type="hidden" asp-for="VendorItemPricing.Id" />
+                <div class="form-group">
+                    <label asp-for="VendorItemPricing.FK_VendorID"></label>
+                    <select asp-for="VendorItemPricing.FK_VendorID" asp-items="ViewBag.Vendors" class="form-control">
+                        <option value="">-- Select Item --</option>
+                    </select>
+                    <span asp-validation-for="VendorItemPricing.FK_VendorID" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="VendorItemPricing.FK_ItemID"></label>
+                    <select asp-for="VendorItemPricing.FK_ItemID" asp-items="ViewBag.ItemList" class="form-control">
+                        <option value="">-- Select Item --</option>
+                    </select>
+                    <span asp-validation-for="VendorItemPricing.FK_ItemID" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="VendorItemPricing.FK_UOM" ></label>
+                    <select asp-for="VendorItemPricing.FK_UOM" class="form-control" asp-items="ViewBag.ColumnValues">
+                        <option value="">Select UOM</option>
+                    </select>
+                    <span asp-validation-for="VendorItemPricing.FK_UOM" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="VendorItemPricing.PricePerUOM"></label>
+                    <input asp-for="VendorItemPricing.PricePerUOM" class="form-control" />
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Save</button>
+                @if (Model.VendorItemPricing.Id != 0)
+                {
+                    <a asp-action="Index" asp-route-isCancel="true" value="true" class="btn btn-secondary">Cancel</a>
+                }
+            </form>
+        </div>
+
+        <!-- List Section -->
+        <div class="col-md-9">
+            <h3>Vendor Item Pricing List</h3>
+           
+            <table id="pricing" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Vendor</th>
+                        <th>Item</th>
+                        <th>UOM</th>
+                        <th>Price</th>
+                        <th>Effective Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var pricing in Model.VendorItemPricingList)
+                    {
+                        <tr>
+                            <td>@pricing.VendorName</td>
+                            <td>@pricing.ItemName</td>
+                            <td>@pricing.FK_UOM</td>
+                            <td>@pricing.PricePerUOM</td>
+                            <td>@pricing.EffectiveDate.ToShortDateString()</td>
+                            <td>
+                            <td>
+                                <a asp-action="Index" asp-route-id="@pricing.Id" class="btn btn-warning btn-sm">Edit</a>
+                            </td>
+                            
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('#pricing').DataTable({
+                    "paging": true,
+                    "searching": true,
+                    "ordering": true,
+                    "info": true,
+                    "responsive": true
+                });
+            });
+        </script>
+    }
+}

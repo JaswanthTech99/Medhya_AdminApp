@@ -9,5 +9,10 @@ namespace Medhya.Admin.Repository
         // Task<int> UpdateAsync(Item item);
         Task<int> DeleteAsync(int id);
         Task<List<string>> UOMList();
+        Task<List<Category>> CategoryList();
+        Task<IEnumerable<ItemPriceByUOM>> ItemPriceByUOMAsyncList();
+        Task<int> AddItemPriceByUOM(ItemPriceByUOM itemPriceByUOM);
+        Task<ItemPriceByUOM> GetItemPriceByUOMById(int id);
+        Task<IEnumerable<DDLItem>> GetItemList();
     }
 }

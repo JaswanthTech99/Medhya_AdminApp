@@ -1,5 +1,7 @@
-﻿using System.Data;
+﻿
 using Microsoft.Data.SqlClient;
+using System.Data;
+
 using Microsoft.Extensions.Configuration;
 
 namespace Medhya.Admin.Models

@@ -4,7 +4,7 @@ using System.Data;
 
 namespace Medhya.Admin.Repository
 {
-    public class CategoryRepository : IcategoryRepository
+    public class CategoryRepository 
     {
         private readonly DapperContext _dapperContext;
         private readonly ILogger<CategoryRepository> _logger;

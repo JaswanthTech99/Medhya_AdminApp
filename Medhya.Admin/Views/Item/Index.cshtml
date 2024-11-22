@@ -1,0 +1,148 @@
+﻿@model Medhya.Admin.Models.ItemViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.min.css" />
+<h3>Item Create</h3>
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-4">
+            <form asp-action="Create" method="post">
+                <input type="hidden" asp-for="item.Id" />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group">
+                    <label asp-for="item.FK_CategoryId" class="control-label"></label>
+                    <select id="item.FK_CategoryId" name="item.FK_CategoryId" class="form-control" asp-items="ViewBag.categoryList">
+                        <option value="">Please select an option</option>
+                    </select>
+                    <span asp-validation-for="item.FK_CategoryId" class="text-danger"></span>
+
+                </div>
+                <div class="form-group">
+                    <label asp-for="item.ItemName" class="control-label"></label>
+                    <input asp-for="item.ItemName" class="form-control" />
+                    <span asp-validation-for="item.ItemName" class="text-danger"></span>
+                </div>
+                @if (Model.item.Id > 0)
+                {
+                    if (Model.item.ItemStatus == "A")
+                    {
+                        <div class="form-group">
+                            <label asp-for="item.ItemStatus" class="control-label">Item Status</label>
+                            <div class="form-check">
+                                <input type="radio" asp-for="item.ItemStatus" class="form-check-input" value="A" checked="@Model.item.ItemStatus == 'A'" />
+                                <label class="form-check-label">Active</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" asp-for="item.ItemStatus" class="form-check-input" value="I" />
+                                <label class="form-check-label">Inactive</label>
+                            </div>
+                            <span asp-validation-for="item.ItemStatus" class="text-danger"></span>
+                        </div>
+                    }
+
+                    else
+                    {
+                        <div class="form-group">
+                            <label asp-for="item.ItemStatus" class="control-label">Item Status</label>
+                            <div class="form-check">
+                                <input type="radio" asp-for="item.ItemStatus" class="form-check-input" value="A" />
+                                <label class="form-check-label">Active</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" asp-for="item.ItemStatus" class="form-check-input" value="I" checked="@Model.item.ItemStatus == 'I'" />
+                                <label class="form-check-label">Inactive</label>
+                            </div>
+                            <span asp-validation-for="item.ItemStatus" class="text-danger"></span>
+                        </div>
+                    }
+                }
+                <div class="form-group">
+                    <label asp-for="item.Description" class="control-label"></label>
+
+                    <textarea asp-for="item.Description" type="text" class="form-control" rows="8" id="MessageInputField"></textarea>
+                    <span asp-validation-for="item.Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                    @if (Model.item.Id != 0)
+                    {
+                        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+                    }
+                </div>
+
+
+
+            </form>
+        </div>
+
+
+        <div class="col-md-8">
+            <h2>Items</h2>
+            <table id="itemsTable" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>
+                            Category name
+                        </th>
+
+                        <th>
+                            Item name
+                        </th>
+                        <th>
+                            Status
+                        </th>
+
+
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.itemList)
+                    {
+                        <tr>
+                            <td>
+                                @item.CategoryName
+                            </td>
+
+                            <td>
+                                @item.ItemName
+                            </td>
+                            <td>
+                                @item.ItemStatus
+                            </td>
+
+
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#itemsTable').DataTable({
+                "paging": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "responsive": true
+            });
+        });
+    </script>
+
+}
+

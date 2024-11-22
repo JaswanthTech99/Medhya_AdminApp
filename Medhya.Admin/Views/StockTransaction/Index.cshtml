@@ -1,0 +1,95 @@
+﻿ @model Medhya.Admin.Models.StockTransactionViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Create</h3>
+<div class="row">
+<div class="col-md-4">
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="NewTransaction.FK_ItemId"></label>
+        <select asp-for="NewTransaction.FK_ItemId" asp-items="ViewBag.Items" class="form-control">
+            <option value="">-- Select Item --</option>
+        </select>
+        <span asp-validation-for="NewTransaction.FK_ItemId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="NewTransaction.fk_VendorId"></label>
+        <select asp-for="NewTransaction.fk_VendorId" asp-items="ViewBag.Vendors" class="form-control">
+            <option value="">-- Select Vendor --</option>
+        </select>
+        <span asp-validation-for="NewTransaction.fk_VendorId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="NewTransaction.TransactionType"></label>
+        <select asp-for="NewTransaction.TransactionType" class="form-control">
+            <option value="">-- Select Transaction Type --</option>
+            <option value="IN">IN</option>
+            <option value="OUT">OUT</option>
+            <option value="WASTAGE">WASTAGE</option>
+        </select>
+        <span asp-validation-for="NewTransaction.TransactionType" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="NewTransaction.ItemQty"></label>
+        <input asp-for="NewTransaction.ItemQty" class="form-control" />
+        <span asp-validation-for="NewTransaction.ItemQty" class="text-danger"></span>
+    </div>
+
+   
+
+    <div class="form-group">
+        <label asp-for="NewTransaction.Reason"></label>
+        <textarea asp-for="NewTransaction.Reason" class="form-control"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+</div>
+    <div class="col-md-8">
+<table class="table">
+    <thead>
+        <tr>
+            <th>Transaction ID</th>
+            <th>ItemName</th>
+            <th>Vendor</th>
+            <th>Transaction Type</th>
+            <th>Quantity</th>           
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Transactions) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TransactionID)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.ItemName)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.VendorName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TransactionType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemQty)
+            </td>
+          
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>
+</div>

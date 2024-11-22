@@ -37,8 +37,9 @@ namespace Medhya.API.Services
             parameters.Add("Tax3", item.Tax3);
             parameters.Add("Tax4", item.Tax4);
             parameters.Add("output", dbType: DbType.Int32, direction: ParameterDirection.Output);
+            
 
-            await _dbConnection.ExecuteAsync("USP_MANAGE_ITEMDETAILS", parameters, commandType: CommandType.StoredProcedure);
+            await _dbConnection.QueryAsync("USP_MANAGE_ITEMDETAILS", parameters, commandType: CommandType.StoredProcedure);
             return parameters.Get<int>("output");
 
         }

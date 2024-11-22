@@ -14,7 +14,9 @@
         <div class="col-md-4">
             <div class="form-group">
                 <label asp-for="FK_CategoryId" class="control-label"></label>
-                <input asp-for="FK_CategoryId" class="form-control" />
+                <select id="FK_CategoryId" name="FK_CategoryId" class="form-control" asp-items="ViewBag.categoryList">
+                    <option value="">Please select an option</option>
+                </select>
                 <span asp-validation-for="FK_CategoryId" class="text-danger"></span>
 
             </div>
@@ -28,16 +30,18 @@
                 <input asp-for="ItemName" class="form-control" />
                 <span asp-validation-for="ItemName" class="text-danger"></span>
             </div>
-            <div class="form-group">
+           @*  <div class="form-group">
                 <label asp-for="ItemPrice" class="control-label"></label>
                 <input asp-for="ItemPrice" class="form-control" />
                 <span asp-validation-for="ItemPrice" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FK_UOM" class="control-label"></label>
-                <input asp-for="FK_UOM" class="form-control" />
+            </div> *@
+           @*  <div class="form-group">
+                <label class="control-label">UOM</label>
+                <select id="FK_UOM" name="FK_UOM" class="form-control" asp-items="ViewBag.ColumnValues">
+                    <option value="">Please select an option</option>
+                </select>
                 <span asp-validation-for="FK_UOM" class="text-danger"></span>
-            </div>
+            </div> *@
         </div>
         <div class="col-md-1"></div>
         <div class="col-md-6">

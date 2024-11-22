@@ -1,0 +1,144 @@
+﻿@model VendorViewModel
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.min.css" />
+<style>
+
+    <style >
+    .alert-success {
+        color: green;
+        background-color: #d4edda;
+        border: 1px solid #c3e6cb;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .alert-danger {
+        color: red;
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .alert-exists {
+        color: blue;
+        background-color: #d1ecf1;
+        border: 1px solid #bee5eb;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    #vendorTable.dataTable tbody tr {
+        height: auto; /* Automatically adjust height */
+    }
+
+    #vendorTable.dataTable td {
+        padding: 4px; /* Reduce padding for cells */
+        font-size: 14px; /* Reduce font size */
+    }
+
+    #vendorTable.dataTable th {
+        padding: 6px; /* Reduce padding for headers */
+        font-size: 14px; /* Adjust font size for headers */
+    }
+</style>
+</style>
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-4">
+
+            <h2>@(Model.Vendor.Id == 0 ? "Create Vendor" : "Edit Vendor")</h2>
+            <form asp-action="Create" method="post">
+                <input type="hidden" asp-for="Vendor.Id" />
+                <div class="form-group">
+                    <label asp-for="Vendor.VendorName"></label>
+                    <input asp-for="Vendor.VendorName" class="form-control" />
+                    <span asp-validation-for="Vendor.VendorName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Vendor.ContactNumber"></label>
+                    <input asp-for="Vendor.ContactNumber" class="form-control" />
+                    <span asp-validation-for="Vendor.ContactNumber" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Vendor.Address"></label>
+                    <input asp-for="Vendor.Address" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Vendor.City"></label>
+                    <input asp-for="Vendor.City" class="form-control" />
+                    <span asp-validation-for="Vendor.City" class="text-danger"></span>
+                </div>
+                @if (Model.Vendor.Id > 0)
+                {
+                    <div class="form-group">
+                        <label asp-for="Vendor.Status"></label>
+                        <input asp-for="Vendor.Status" class="form-control" />
+                    </div>
+                }
+                <button type="submit" class="btn btn-primary">Save</button>
+                @if (Model.Vendor.Id != 0)
+                {
+                    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+                }
+                <div class="form-group">
+                    @if (TempData["MessageType"] != null)
+                    {
+                        <div class="alert @(TempData["MessageType"]== "success" ? "alert-success" : TempData["MessageType"] == "exists" ? "alert-danger" : "alert-exists")">
+                            @TempData["Message"]
+                        </div>
+                    }
+                </div>
+            </form>
+            
+        </div>
+        <div class="col-md-8">
+            <h2>Vendors</h2>
+            <table id="vendorTable" class="table table-striped table-bordered" style="font-size:10px !important">
+                <thead>
+                    <tr>
+
+                        <th>Vendor Name</th>
+                        <th>City</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var vendor in Model.VendorList)
+                    {
+                        <tr>
+
+                            <td>@vendor.VendorName</td>
+                            <td>@vendor.City</td>
+
+                            <td>@vendor.Status</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@vendor.Id" class="btn btn-sm btn-warning">Edit</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('#vendorTable').DataTable({
+                    "paging": true,
+                    "searching": true,
+                    "ordering": true,
+                    "info": true,
+                    "responsive": true
+                });
+            });
+        </script>
+    }
+}
