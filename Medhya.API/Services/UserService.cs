@@ -4,6 +4,7 @@ using Medhya.API.Model;
 using Medhya.API.Repositories;
 using Microsoft.Data.SqlClient;
 using System.Data;
+using static Medhya.API.Model.User;
 
 namespace Medhya.API.Services
 {
@@ -35,6 +36,92 @@ namespace Medhya.API.Services
                
             }
 
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<ResponeMessage> InsertUserAddress(int userId, IEnumerable<UserAddress> addressDetails)
+        {
+            try
+            {
+                using (var connection = _context.CreateConnection())
+                {
+                    var table = new DataTable();
+                    table.Columns.Add("FK_UserId", typeof(int));
+                    table.Columns.Add("AddressLine1", typeof(string));
+                    table.Columns.Add("Area", typeof(string));
+                    table.Columns.Add("State", typeof(string));
+                    table.Columns.Add("City", typeof(string));
+                    table.Columns.Add("Longitude", typeof(decimal));
+                    table.Columns.Add("Latitude", typeof(decimal));
+                    table.Columns.Add("CreatedDate", typeof(DateTime));
+                    table.Columns.Add("UpdatedDate", typeof(DateTime));
+
+                    foreach (var address in addressDetails)
+                    {
+                        table.Rows.Add(userId, address.AddressLine1, address.Area, address.State, address.City,
+                            address.Longitude, address.Latitude, DateTime.Now, DateTime.Now);
+                    }
+
+                    var _param = new DynamicParameters();
+                    _param.Add("UserId", userId, DbType.Int32);
+                    _param.Add("AddressDetails", table.AsTableValuedParameter("UserAddressTableType"));
+
+                    const string storedProcedure = "dbo.USP_INSERT_USER_ADDRESS";
+                    await connection.ExecuteAsync(storedProcedure, _param, commandType: CommandType.StoredProcedure);
+
+                    return new ResponeMessage
+                    {
+                        ErrorNo = 0,
+                        Message = "Addresses inserted successfully."
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public async Task<ResponeMessage> UpdateUserAddress(int addressId, int userId, IEnumerable<UserAddress> addressDetails)
+        {
+            try
+            {
+                using (var connection = _context.CreateConnection())
+                {
+                    var table = new DataTable();
+                    table.Columns.Add("FK_UserId", typeof(int));
+                    table.Columns.Add("AddressLine1", typeof(string));
+                    table.Columns.Add("Area", typeof(string));
+                    table.Columns.Add("State", typeof(string));
+                    table.Columns.Add("City", typeof(string));
+                    table.Columns.Add("Longitude", typeof(decimal));
+                    table.Columns.Add("Latitude", typeof(decimal));
+                    table.Columns.Add("CreatedDate", typeof(DateTime));
+                    table.Columns.Add("UpdatedDate", typeof(DateTime));
+
+                    foreach (var address in addressDetails)
+                    {
+                        table.Rows.Add(userId, address.AddressLine1, address.Area, address.State, address.City,
+                            address.Longitude, address.Latitude, DateTime.Now, DateTime.Now);
+                    }
+
+                    var _param = new DynamicParameters();
+                    _param.Add("Address_Id", addressId, DbType.Int32);
+                    _param.Add("UserId", userId, DbType.Int32);
+                    _param.Add("AddressDetails", table.AsTableValuedParameter("UserAddressTableType"));
+
+                    const string storedProcedure = "dbo.USP_UPDATE_USER_ADDRESS";
+                    await connection.ExecuteAsync(storedProcedure, _param, commandType: CommandType.StoredProcedure);
+
+                    return new ResponeMessage
+                    {
+                        ErrorNo = 0,
+                        Message = "Addresses updated successfully."
+                    };
+                }
+            }
             catch (Exception ex)
             {
                 throw ex;

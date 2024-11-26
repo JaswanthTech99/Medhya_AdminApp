@@ -6,5 +6,7 @@ namespace Medhya.API.Repositories
     {
         public Task<ResponeMessage> CreateUser(User user);
         public Task<int> UpdateUser(User user);
+
+
     }
 }

@@ -19,6 +19,21 @@
         public float Tax2 { get; set; }
         public float Tax3 { get; set; }
         public float Tax4 { get; set; }
+
+        // New properties added based on stored procedure
+        public DateTime? CreatedDate { get; set; } // Represents I.CreatedDate
+        public string? CreatedBy { get; set; }    // Represents I.CreatedBy
+        public DateTime? UpdatedDate { get; set; } // Represents I.UpdatedDate
+        public string? UpdatedBy { get; set; }    // Represents I.UpdatedBy
+
+        public DateTime? PriceDate { get; set; }   // Represents P.PriceDate
+        public decimal? Price { get; set; }       // Represents P.Price
+        public decimal? VendorPrice { get; set; } // Represents P.VendorPrice
+        public string? PriceStatus { get; set; }  // Represents P.PriceStatus
+        public DateTime? PriceCreatedDate { get; set; } // Represents P.CreatedDate AS PriceCreatedDate
+        public string? PriceCreatedBy { get; set; }    // Represents P.CreatedBy AS PriceCreatedBy
+        public string? PriceUpdatedBy { get; set; }    // Represents P.UpdatedBy AS PriceUpdatedBy
+        public DateTime? PriceUpdatedDate { get; set; } // Represents P.UpdatedDate AS PriceUpdatedDate
     }
 }
 

@@ -64,6 +64,14 @@ namespace Medhya.API.Services
             var result = await _dbConnection.QueryFirstOrDefaultAsync<Item>("USP_ITEMDETAILS_ID", new { Id = id }, commandType: CommandType.StoredProcedure);
             return result;
         }
+        public async Task<IEnumerable<Item>> GetByCategoryIdAsync(int categoryId)
+        {
+            var result = await _dbConnection.QueryAsync<Item>(
+                "USP_GET_ITEMS_BY_CATEGORYID",
+                new { CategoryId = categoryId },
+                commandType: CommandType.StoredProcedure);
+            return result.ToList();
+        }
 
         //public Task<int> UpdateAsync(Item product)
         //{
