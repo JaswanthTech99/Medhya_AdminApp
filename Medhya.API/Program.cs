@@ -2,6 +2,7 @@ using Medhya.API.Context;
 using Medhya.API.Interfaces;
 using Medhya.API.Middleware;
 using Medhya.API.Repositories;
+using Medhya.API.Repository;
 using Medhya.API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -56,6 +57,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<DapperContext>();
 builder.Services.AddScoped<IUserRepository, UserService>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+
 builder.Services.AddScoped<ICategoryRepository, CategoryService>();
 builder.Services.AddScoped<ISMSService, SMSService>();
 builder.Host.UseNLog();

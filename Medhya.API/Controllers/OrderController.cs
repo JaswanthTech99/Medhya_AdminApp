@@ -7,7 +7,7 @@ namespace Medhya.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class OrderController : ControllerBase
     {
         private readonly IOrderRepository _orderRepository;
@@ -26,7 +26,7 @@ namespace Medhya.API.Controllers
 
         [HttpPost("CreateTempOrder")]
         public async Task<IActionResult> CreateTempOrder([FromBody] TempOrder tempOrder)
-        {
+       {
             var result = await _orderRepository.AddAsync(tempOrder);
             return Ok(result);
         }
@@ -47,15 +47,6 @@ namespace Medhya.API.Controllers
             if (order == null)
                 return NotFound($"Order with ID {id} not found.");
             return Ok(order);
-        }
-
-        [HttpGet("GetTempOrderById/{id}")]
-        public async Task<IActionResult> GetTempOrderById(int id)
-        {
-            var tempOrder = await _orderRepository.GetTempOrderById(id);
-            if (tempOrder == null)
-                return NotFound($"TempOrder with ID {id} not found.");
-            return Ok(tempOrder);
         }
 
         [HttpDelete("DeleteOrder/{id}")]
