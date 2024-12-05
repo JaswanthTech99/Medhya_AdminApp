@@ -13,7 +13,7 @@ namespace Medhya.API.Model
         public int UserId { get; set; }
         [Required]
         public string MobileNumber { get; set; }
-        public string OTP { get; set; }
+        public string OTP { get; set; } 
         public string Email { get;set; }
         public bool IsMobileVerified { get; set; }
         public class UserAddress

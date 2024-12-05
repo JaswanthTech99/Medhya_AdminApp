@@ -69,6 +69,6 @@ namespace Medhya.API.Controllers
                 -99 => Conflict(new { Error = "Mobile number already exists." }),
                 _ => StatusCode(500, new { Error = "An error occurred during registration." })
             };
-        }
+        } 
     }
 }

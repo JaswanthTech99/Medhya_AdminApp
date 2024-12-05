@@ -173,7 +173,7 @@ namespace Medhya.API.Services
             catch (Exception ex)
             {
 
-                throw ex;
+                throw ex; 
             }
         }
     }
