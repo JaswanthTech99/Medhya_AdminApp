@@ -10,6 +10,6 @@ namespace Medhya.API.Repositories
         Task<ResponeMessage> CreateUser(User user); // Method to create a new user
         Task<ResponeMessage> InsertUserAddress(int userId, IEnumerable<UserAddress> addressDetails); // Add addresses for a user
         Task<ResponeMessage> UpdateUserAddress(int addressId, int userId, IEnumerable<UserAddress> addressDetails); // Update user addresses
-        Task<int> UpdateUser(User user); // Update user details (currently not implemented)
+        Task<ResponeMessage> UpdateUser(User user); // Update user details (currently not implemented)
     }
 }

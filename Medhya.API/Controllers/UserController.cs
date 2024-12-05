@@ -21,8 +21,25 @@ namespace Medhya.API.Controllers
         [HttpPost("CreateUser")]
         public async Task<IActionResult> CreateUser([FromBody] User user)
         {
-            var result = await _userRepository.CreateUser(user);
-            return Ok(result);
+            //var result = await _userRepository.CreateUser(user);
+            //return Ok(result);
+
+            try
+            {
+               
+                var result = await _userRepository.CreateUser(user);
+
+                return result.ErrorNo switch
+                {
+                    1 => Ok(new { Message = "User registered successfully.", UserId = result.Message }),
+                    -99 => Conflict(new { Error = "Mobile number already exists." }),
+                    _ => StatusCode(500, new { Error = "An error occurred during registration." })
+                };
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Error = "Internal server error." });
+            }
         }
 
         [HttpPost("InsertUserAddress")]
@@ -43,9 +60,15 @@ namespace Medhya.API.Controllers
         public async Task<IActionResult> UpdateUser([FromBody] User user)
         {
             var result = await _userRepository.UpdateUser(user);
-            if (result == 0)
-                return NotFound("No user found to update.");
-            return Ok("User updated successfully.");
+            //if (result)
+            //    return NotFound("No user found to update.");
+            //return Ok("User updated successfully.");
+            return result.ErrorNo switch
+            {
+                1 => Ok(new { Message = "User Mobile Number Updated successfully."}),
+                -99 => Conflict(new { Error = "Mobile number already exists." }),
+                _ => StatusCode(500, new { Error = "An error occurred during registration." })
+            };
         }
     }
 }
