@@ -20,3 +20,12 @@ html {
 body {
   margin-bottom: 60px;
 }
+#dataTable .btn {
+    line-height: 1 !important;
+    font-size: 12px !important;
+}
+
+#dataTable td {
+    padding: .25em .25em !important;
+    font-size: 12px !important;
+}

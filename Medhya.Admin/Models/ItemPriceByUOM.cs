@@ -13,6 +13,8 @@ namespace Medhya.Admin.Models
         [RegularExpression(@"^\d+(\.\d{1,2})?$", ErrorMessage = "Please enter a valid price with up to 2 decimal places.")]
         public decimal Price { get; set; }
         public  string? Status { get; set; }
+        public string? CreatedBy { get; set; }
+        public DateTime EffectiveDate { get; set; }
     }
 
     public class  ItemPricebyUOMViewModel

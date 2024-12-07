@@ -1,10 +1,14 @@
 ﻿using Medhya.Admin.Models;
 using Medhya.Admin.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace Medhya.Admin.Controllers
 {
+    [Authorize]
     public class StockTransactionController : Controller
     {
         private readonly IStockTransactionsRepository _repository;
@@ -12,17 +16,32 @@ namespace Medhya.Admin.Controllers
         {
             _repository = repository;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id, bool isCancel)
         {
-
+            if (isCancel)
+            {
+                var resetModel = new StockTransactionViewModel
+                {
+                    Transactions = await _repository.GetAllTransactionsAsync()
+                };
+                await ItemList();
+                await ItemVendorList();
+                await UomList();
+                //var transactions = await _repository.GetAllTransactionsAsync();
+                return View(resetModel); // Pass data to the Razor view
+            } var stockTransaction = id.HasValue
+                ? await _repository.GetTransactionByIdAsync(id.Value)
+                : new StockTransactions();
             var viewModel = new StockTransactionViewModel
             {
+                NewTransaction = stockTransaction,
                 Transactions = await _repository.GetAllTransactionsAsync()
             };
             await ItemList();
             await ItemVendorList();
-            //var transactions = await _repository.GetAllTransactionsAsync();
-            return View(viewModel); // Pass data to the Razor view
+            await UomList();
+            return View(viewModel);
+
         }
         public async Task<IActionResult> Details(int id)
         {
@@ -38,13 +57,11 @@ namespace Medhya.Admin.Controllers
         public async Task<IActionResult> Create(StockTransactionViewModel transaction)
         {
 
-            //if (ModelState.IsValid)
-            //{
-            //    await _repository.CreateTransactionAsync(transaction.NewTransaction);
-            //    return RedirectToAction(nameof(Index));
-            //}
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
 
-            transaction.Transactions = await _repository.GetAllTransactionsAsync(); // Repopulate the list
+       
+            transaction.Transactions = await _repository.GetAllTransactionsAsync();
+            transaction.NewTransaction.CreatedBy = userId;
             if (ModelState.IsValid)
             {
                 await _repository.CreateTransactionAsync(transaction.NewTransaction);
@@ -53,6 +70,7 @@ namespace Medhya.Admin.Controllers
 
             await ItemList();
             await ItemVendorList();
+            await UomList();
             // return PartialView("_CreatePartial", transaction);
 
             transaction.Transactions = await _repository.GetAllTransactionsAsync();
@@ -70,10 +88,16 @@ namespace Medhya.Admin.Controllers
         public async Task<EmptyResult> ItemVendorList()
         {
             var items = await _repository.GetVendorList();
-            ViewBag.ItemList = new SelectList(items, "Id", "VendorName");
+            ViewBag.Vendors = new SelectList(items, "Id", "VendorName");
             return new EmptyResult();
 
         }
-        
+        public async Task<EmptyResult> UomList()
+        {
+            List<string> columnValues = await _repository.UOMList();
+            ViewBag.ColumnValues = new SelectList(columnValues);
+            return new EmptyResult();
+        }
+
     }
 }

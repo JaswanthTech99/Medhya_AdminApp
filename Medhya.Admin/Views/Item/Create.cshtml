@@ -8,22 +8,22 @@
 
 <h4>Item</h4>
 <hr />
-<form asp-action="Create">
+<form asp-action="Create" method="post" enctype="multipart/form-data">
     <div class="row">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="col-md-4">
             <div class="form-group">
                 <label asp-for="FK_CategoryId" class="control-label"></label>
-                <select id="FK_CategoryId" name="FK_CategoryId" class="form-control" asp-items="ViewBag.categoryList">
+                <select asp-for="FK_CategoryId" name="FK_CategoryId" class="form-control" asp-items="ViewBag.categoryList">
                     <option value="">Please select an option</option>
                 </select>
                 <span asp-validation-for="FK_CategoryId" class="text-danger"></span>
 
             </div>
             <div class="form-group">
-                <label asp-for="ItemCode" class="control-label"></label>
-                <input asp-for="ItemCode" class="form-control" />
-                <span asp-validation-for="ItemCode" class="text-danger"></span>
+                <label for="ImageFile" class="control-label">Upload Image</label>
+                <input asp-for="ImageFile" type="file" class="form-control" />
+                <span asp-validation-for="ImageFile" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ItemName" class="control-label"></label>
@@ -61,6 +61,14 @@
         </div>
     </div>
 </form>
+<div class="row">
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert @(TempData["MessageType"].ToString() == "success" ? "alert-success" : "alert-danger")">
+            @TempData["Message"]
+        </div>
+    }   
+</div>
 <div>
     <a asp-action="Index">Back to List</a>
 </div>

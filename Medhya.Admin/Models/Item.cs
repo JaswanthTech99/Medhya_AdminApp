@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 
 namespace Medhya.Admin.Models
 {
@@ -22,6 +25,10 @@ namespace Medhya.Admin.Models
         public float Tax2 { get; set; }
         public float Tax3 { get; set; }
         public float Tax4 { get; set; }
+        public string? ImagePath { get; set; } // Stores the saved image URL
+       
+        public IFormFile? ImageFile { get; set; } 
+        public string? CreatedBy { get; set; }
     }
 
     public class ItemViewModel
@@ -41,4 +48,9 @@ namespace Medhya.Admin.Models
         public int Id { get; set; }
         public string? VendorName { get; set; }
     }
+
+
+   
 }
+
+

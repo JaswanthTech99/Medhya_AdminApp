@@ -1,9 +1,11 @@
 ﻿using Medhya.Admin.Models;
 using Medhya.Admin.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Medhya.Admin.Controllers
 {
+    [Authorize]
     public class CategoryController : Controller
     {
         private readonly IcategoryRepository _categoryRepository;

@@ -1,5 +1,6 @@
 ﻿using Medhya.API.Model;
 using Medhya.API.Repositories;
+using Medhya.API.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,13 +9,15 @@ namespace Medhya.API.Controllers
     
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+   // [Authorize]
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryRepository _categoryRepository;
-        public CategoryController(ICategoryRepository categoryRepository) 
+        private readonly IItemRepository _itemRepository;
+        public CategoryController(ICategoryRepository categoryRepository,IItemRepository itemRepository) 
         {
             _categoryRepository = categoryRepository;
+            _itemRepository = itemRepository;
         }
 
         [HttpPost("CreateCategory")]
@@ -50,5 +53,11 @@ namespace Medhya.API.Controllers
             if(category == null) NoContent();
             return Ok(category);
         }
+        [HttpGet("GetCategoriesWithItemsAndUOMs")]
+        public async Task<IActionResult> GetCategoriesWithItemsAndUOMs()
+        {
+            var categories = await _itemRepository.GetAllCategorieswithItems();
+            return Ok(categories);
+        } 
     }
 }

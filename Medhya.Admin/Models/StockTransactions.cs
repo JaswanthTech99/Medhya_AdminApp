@@ -4,7 +4,7 @@ namespace Medhya.Admin.Models
 {
     public class StockTransactions
     {
-        public int TransactionID { get; set; }
+        public int? TransactionID { get; set; }
         [Required(ErrorMessage = "Item is required.")]
         public int? FK_ItemId { get; set; }
         [Required(ErrorMessage = "Vendor is required.")]
@@ -18,6 +18,9 @@ namespace Medhya.Admin.Models
         public string? Reason { get; set; }
         public string? ItemName { get; set; } 
         public string? VendorName { get; set; }
+        [Required(ErrorMessage = "UOM is required.")]
+        public string UOM { get; set; }
+        public string? CreatedBy { get; set; }
     }
     public class StockTransactionViewModel
     {

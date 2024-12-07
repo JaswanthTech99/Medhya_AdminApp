@@ -1,11 +1,13 @@
 ﻿
 using Medhya.Admin.Models;
 using Medhya.Admin.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Medhya.Admin.Controllers
 {
+    [Authorize]
     public class VendorItemPricingController : Controller
     {
         private readonly IVendorItemPriceRepository _repository;

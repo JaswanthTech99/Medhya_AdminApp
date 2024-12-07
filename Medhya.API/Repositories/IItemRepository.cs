@@ -1,4 +1,5 @@
-﻿using Medhya.API.Models;
+﻿using Medhya.API.Model;
+using Medhya.API.Models;
 namespace Medhya.API.Repository
 {
     public interface IItemRepository
@@ -8,5 +9,7 @@ namespace Medhya.API.Repository
         Task<int> AddAsync(Item item);
        // Task<int> UpdateAsync(Item item);
         Task<int> DeleteAsync(int id);
+
+        Task<IEnumerable<ItemListbyCategory>> GetAllCategorieswithItems();
     }
 }

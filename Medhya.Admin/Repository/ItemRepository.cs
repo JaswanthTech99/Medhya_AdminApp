@@ -46,6 +46,8 @@ namespace Medhya.Admin.Repository
                 parameters.Add("Tax2", item.Tax2);
                 parameters.Add("Tax3", item.Tax3);
                 parameters.Add("Tax4", item.Tax4);
+                parameters.Add("CreatedBy", item.CreatedBy);
+                parameters.Add("ImagePath", item.ImagePath);
                 parameters.Add("output", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
 
@@ -137,6 +139,8 @@ namespace Medhya.Admin.Repository
                 parameters.Add("FK_UOMId", itemPriceByUOM.UOM);
                 parameters.Add("Price", itemPriceByUOM.Price);
                 parameters.Add("Status", itemPriceByUOM.Status);
+                parameters.Add("EffectiveDate", itemPriceByUOM.EffectiveDate);
+                parameters.Add("CreatedBy", itemPriceByUOM.CreatedBy);
                 parameters.Add("Output", dbType: DbType.Int32, direction: ParameterDirection.Output);
                 await con.QueryAsync("USP_INS_ITEMPRICEBYUOM", parameters, commandType: CommandType.StoredProcedure);
                 return parameters.Get<int>("Output");

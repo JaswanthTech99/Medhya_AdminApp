@@ -1,110 +1,156 @@
-﻿@model Medhya.Admin.Models.ItemPricebyUOMViewModel
+﻿    @model Medhya.Admin.Models.ItemPricebyUOMViewModel
 
-@{
-    ViewData["Title"] = "ItemPriceByUOmList";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.min.css" />
+    @{
+        ViewData["Title"] = "ItemPriceByUOmList";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+@* <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.min.css" /> *@
+@* <style>
+    .datepicker {
+        z-index: 1050 !important; /* Ensure it appears above other elements */
+    }
 
+    .input-group-text {
+        background-color: #f8f9fa; /* Optional: Match Bootstrap's input styling */
+        border: 1px solid #ced4da; /* Optional: Match Bootstrap's input border */
+    }
 
-<div class="row">
-    <div class="col-md-4">
-        <h3>@(Model.itemPriceByUOM.Id == 0 ? "Create  Item Pricing" : "Edit  Item Pricing")</h3>
-        <form asp-action="CreateItemPrice" method="post">
-            <input type="hidden" asp-for="itemPriceByUOM.Id" />
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    .datepicker {
+        z-index: 9999 !important;
+    }
+</style>
+ *@
+    <div class="row">
+        <div class="col-md-4">
+            <h3>@(Model.itemPriceByUOM.Id == 0 ? "Create  Item Pricing" : "Edit  Item Pricing")</h3>
+            <form asp-action="CreateItemPrice" method="post">
+                <input type="hidden" asp-for="itemPriceByUOM.Id" />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="form-group">
-                <label asp-for="itemPriceByUOM.FK_ItemId" class="control-label">Item</label>
-                <select asp-for="itemPriceByUOM.FK_ItemId" asp-items="ViewBag.ItemList" class="form-control">
-                    <option value="">-- Select Item --</option>
-                </select>
+                <div class="form-group">
+                    <label asp-for="itemPriceByUOM.FK_ItemId" class="control-label">Item</label>
+                    <select asp-for="itemPriceByUOM.FK_ItemId" asp-items="ViewBag.ItemList" class="form-control">
+                        <option value="">-- Select Item --</option>
+                    </select>
               
-                <span asp-validation-for="itemPriceByUOM.FK_ItemId" class="text-danger"></span>
-            </div>
+                    <span asp-validation-for="itemPriceByUOM.FK_ItemId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="itemPriceByUOM.UOM" class="control-label"></label>
+                    <select  asp-for="itemPriceByUOM.UOM" class="form-control" asp-items="ViewBag.ColumnValues">
+                        <option value="">Please select an option</option>
+                    </select>
+                    <span asp-validation-for="itemPriceByUOM.UOM" class="text-danger"></span>
+                </div>
+           
+                <div class="form-group">
+                    <label asp-for="itemPriceByUOM.Price" class="control-label"></label>
+                    <input asp-for="itemPriceByUOM.Price" class="form-control" />
+                    <span asp-validation-for="itemPriceByUOM.Price" class="text-danger"></span>
+                </div>
             <div class="form-group">
-                <label asp-for="itemPriceByUOM.UOM" class="control-label"></label>
-                <select id="itemPriceByUOM.UOM" name="itemPriceByUOM.UOM" class="form-control" asp-items="ViewBag.ColumnValues">
-                    <option value="">Please select an option</option>
-                </select>
-                <span asp-validation-for="itemPriceByUOM.UOM" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="itemPriceByUOM.Price" class="control-label"></label>
-                <input asp-for="itemPriceByUOM.Price" class="form-control" />
-                <span asp-validation-for="itemPriceByUOM.Price" class="text-danger"></span>
-            </div>
+                <label for="dateInput">Select Date</label>
+                <input type="text" asp-for="  .  EffectiveDate" id="datepicker" name="dateInput" class="form-control" />
 
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
-        </form>
-    </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                    @if (Model.itemPriceByUOM.Id!= 0)
+                    {
+                        <a asp-action="ItemPriceByUOmList" asp-route-isCancel="true" value="true" class="btn btn-secondary">Cancel</a>
+                    }
+                </div>
+            </form>
+        </div>
 
-<div class="col-md-8">
-<table id="itemsTable"  class="table table-striped table-bordered">
-    <thead>
-        <tr>
-
-            <th>
-                @Html.DisplayNameFor(model => model.itemPriceByUOM.ItemName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.itemPriceByUOM.UOM)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.itemPriceByUOM.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.itemPriceByUOM.Status)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.itemPriceByUOMList)
-        {
+    <div class="col-md-8">
+            <table id="dataTable" style="font-size:12px" class="table table-striped table-bordered">
+        <thead>
             <tr>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.ItemName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UOM)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Status)
-                </td>
-                <td>
-                            <a asp-action="ItemPriceByUOmList" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Edit</a>
-                        @*     @Html.ActionLink("Edit", "ItemPriceByUOmList", new {  id=item.Id  }) | *@
-                   @*  @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-                </td> *@
+                <th>
+                    @Html.DisplayNameFor(model => model.itemPriceByUOM.ItemName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.itemPriceByUOM.UOM)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.itemPriceByUOM.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.itemPriceByUOM.Status)
+                </th>
+                <th></th>
             </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.itemPriceByUOMList)
+            {
+                <tr>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ItemName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UOM)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                                <a asp-action="ItemPriceByUOmList" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Edit</a>
+                            @*     @Html.ActionLink("Edit", "ItemPriceByUOmList", new {  id=item.Id  }) | *@
+                       @*  @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    </td> *@
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    </div>
+    
+        @if (TempData["Message"] != null)
+        {
+            <div class="alert @(TempData["MessageType"].ToString() == "success" ? "alert-success" : "alert-danger")">
+                @TempData["Message"]
+            </div>
         }
-    </tbody>
-</table>
+    </div>
+    @section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 
-</div>
-</div>
-@section Scripts {
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.min.js"></script>
-        <script>
-            $(document).ready(function () {
-                $('#itemsTable').DataTable({
-                    "paging": true,
-                    "searching": true,
-                    "ordering": true,
-                    "info": true,
-                    "responsive": true
-                });
+  @*   <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.min.js"></script> *@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+            <script>
+
+        $(document).ready(function () {
+            // Initialize the datepicker
+            $('#datepicker').datepicker({
+                autoclose: true, // Close picker on date selection
+                todayHighlight: true, // Highlight today's date
+                orientation: "auto", // Auto-adjust orientation
+                format: 'mm/dd/yyyy' // Set the date format
             });
-        </script>
 
-}
+            // Initialize DataTable
+            $('#dataTable').DataTable({
+                "paging": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "responsive": true
+            });
+        });
+
+            </script>
+
+    }

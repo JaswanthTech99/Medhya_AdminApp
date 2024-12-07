@@ -1,13 +1,12 @@
 ﻿@model VendorItemPricingViewModel
-
+@{
+   
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.min.css" />
 <div class="container">
     <!-- Display Messages -->
-    @if (TempData["Message"] != null)
-    {
-        <div class="alert @(TempData["MessageType"].ToString() == "success" ? "alert-success" : "alert-danger")">
-            @TempData["Message"]
-        </div>
-    }
+   
 
     <div class="row">
         <!-- Form Section -->
@@ -47,13 +46,14 @@
                     <a asp-action="Index" asp-route-isCancel="true" value="true" class="btn btn-secondary">Cancel</a>
                 }
             </form>
+           
         </div>
 
         <!-- List Section -->
         <div class="col-md-9">
             <h3>Vendor Item Pricing List</h3>
            
-            <table id="pricing" class="table table-striped table-bordered">
+            <table id="dataTable" class="table table-striped table-bordered">
                 <thead>
                     <tr>
                         <th>Vendor</th>
@@ -84,6 +84,12 @@
             </table>
         </div>
     </div>
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert @(TempData["MessageType"].ToString() == "success" ? "alert-success" : "alert-danger")">
+            @TempData["Message"]
+        </div>
+    }
 </div>
 @section Scripts {
     @{
@@ -92,7 +98,7 @@
         <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.min.js"></script>
         <script>
             $(document).ready(function () {
-                $('#pricing').DataTable({
+                $('#dataTable').DataTable({
                     "paging": true,
                     "searching": true,
                     "ordering": true,
